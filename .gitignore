@@ -34,3 +34,4 @@ terraform.rc
 
 *.env
 **/node_modules/*
+**/.idea/*
