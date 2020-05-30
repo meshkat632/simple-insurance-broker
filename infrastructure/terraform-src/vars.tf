@@ -4,6 +4,8 @@ variable "cluster-name" {
 }
 
 variable "vpc-name" {
-  default = "simple-insurence-broker-eks-cluster-vpc"
+  default = "simple-insurence-broker-eks-vpc"
   type    = string
 }
+
+

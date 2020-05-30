@@ -1,5 +1,5 @@
 # workers
-resource "aws_security_group" "eks-node" {
+resource "aws_security_group" "demo-node" {
   name        = var.cluster-name
   description = "Security group for all nodes in the cluster"
   vpc_id      = module.vpc.vpc_id
@@ -17,22 +17,22 @@ resource "aws_security_group" "eks-node" {
   }
 }
 
-resource "aws_security_group_rule" "eks-node-ingress-self" {
+resource "aws_security_group_rule" "demo-node-ingress-self" {
   description              = "Allow node to communicate with each other"
   from_port                = 0
   protocol                 = "-1"
-  security_group_id        = aws_security_group.eks-node.id
-  source_security_group_id = aws_security_group.eks-node.id
+  security_group_id        = aws_security_group.demo-node.id
+  source_security_group_id = aws_security_group.demo-node.id
   to_port                  = 65535
   type                     = "ingress"
 }
 
-resource "aws_security_group_rule" "eks-node-ingress-cluster" {
+resource "aws_security_group_rule" "demo-node-ingress-cluster" {
   description              = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
   from_port                = 1025
   protocol                 = "tcp"
-  security_group_id        = aws_security_group.eks-node.id
-  source_security_group_id = aws_security_group.eks-cluster.id
+  security_group_id        = aws_security_group.demo-node.id
+  source_security_group_id = aws_security_group.demo-cluster.id
   to_port                  = 65535
   type                     = "ingress"
 }

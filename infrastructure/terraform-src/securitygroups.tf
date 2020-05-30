@@ -1,4 +1,4 @@
-resource "aws_security_group" "eks-cluster" {
+resource "aws_security_group" "demo-cluster" {
   name        = var.cluster-name
   description = "Cluster communication with worker nodes"
   vpc_id      = module.vpc.vpc_id
@@ -15,17 +15,17 @@ resource "aws_security_group" "eks-cluster" {
   }
 }
 
-resource "aws_security_group_rule" "eks-cluster-ingress-node-https" {
+resource "aws_security_group_rule" "demo-cluster-ingress-node-https" {
   description              = "Allow pods to communicate with the cluster API Server"
   from_port                = 443
   protocol                 = "tcp"
-  security_group_id        = aws_security_group.eks-cluster.id
-  source_security_group_id = aws_security_group.eks-node.id
+  security_group_id        = aws_security_group.demo-cluster.id
+  source_security_group_id = aws_security_group.demo-node.id
   to_port                  = 443
   type                     = "ingress"
 }
 
-resource "aws_security_group_rule" "eks-cluster-ingress-workstation-https" {
+resource "aws_security_group_rule" "demo-cluster-ingress-workstation-https" {
   # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
   # force an interpolation expression to be interpreted as a list by wrapping it
   # in an extra set of list brackets. That form was supported for compatibilty in
@@ -38,7 +38,7 @@ resource "aws_security_group_rule" "eks-cluster-ingress-workstation-https" {
   description       = "Allow workstation to communicate with the cluster API Server"
   from_port         = 443
   protocol          = "tcp"
-  security_group_id = aws_security_group.eks-cluster.id
+  security_group_id = aws_security_group.demo-cluster.id
   to_port           = 443
   type              = "ingress"
 }
