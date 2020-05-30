@@ -1,5 +1,5 @@
 resource "aws_security_group" "demo-cluster" {
-  name        = var.cluster-name
+  name        = "terraform-eks-demo-cluster"
   description = "Cluster communication with worker nodes"
   vpc_id      = module.vpc.vpc_id
 

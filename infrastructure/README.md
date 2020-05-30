@@ -30,14 +30,17 @@ terraform apply
 ```
 
 ## Configure kubectl
-```
 terraform output kubeconfig # save output in ~/.kube/config
-aws eks --region <region> update-kubeconfig --name terraform-eks-demo
+```
+
+terraform output kubeconfig > ~/.kube/config
+export KUBECONFIG=~/.kube/config
+aws eks --region eu-central-1 update-kubeconfig --name terraform-eks-demo
 ```
 
 ## Configure config-map-auth-aws
 ```
-terraform output config-map-aws-auth # save output in config-map-aws-auth.yaml
+terraform output config-map-aws-auth > config-map-aws-auth.yaml
 kubectl apply -f config-map-aws-auth.yaml
 ```
 
@@ -46,6 +49,33 @@ kubectl apply -f config-map-aws-auth.yaml
 kubectl get nodes
 ```
 
+## test with helloworld deployment 
+```
+$kubectl run helloworld --image=k8s.gcr.io/echoserver:1.4 --port=8080
+$kubectl expose pod helloworld --type=LoadBalancer
+$kubectl get service
+NAME         TYPE           CLUSTER-IP      EXTERNAL-IP                                                                PORT(S)          AGE
+helloworld   LoadBalancer   172.20.23.182   af27612ea8b5e48119a0d4b242d28540-24730900.eu-central-1.elb.amazonaws.com   8080:31294/TCP   36s
+kubernetes   ClusterIP      172.20.0.1      <none>                                                                     443/TCP          21m
+$curl http://af27612ea8b5e48119a0d4b242d28540-24730900.eu-central-1.elb.amazonaws.com:8080
+CLIENT VALUES:
+client_address=10.0.103.136
+command=GET
+real path=/
+query=nil
+request_version=1.1
+request_uri=http://af27612ea8b5e48119a0d4b242d28540-24730900.eu-central-1.elb.amazonaws.com:8080/
+
+SERVER VALUES:
+server_version=nginx: 1.10.0 - lua: 10001
+
+HEADERS RECEIVED:
+accept=*/*
+host=af27612ea8b5e48119a0d4b242d28540-24730900.eu-central-1.elb.amazonaws.com:8080
+user-agent=curl/7.58.0
+BODY:
+-no body in request-
+```
 ## Destroy
 Make sure all the resources created by Kubernetes are removed (LoadBalancers, Security groups), and issue:
 ```

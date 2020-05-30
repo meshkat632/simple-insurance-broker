@@ -13,7 +13,7 @@ module "vpc" {
   enable_vpn_gateway = false
 
   tags = {
-    "Name"                                      = var.vpc-name
+    "Name"                                      = "vpc-for-eks-cluster"
     "kubernetes.io/cluster/${var.cluster-name}" = "shared"
   }
 }
