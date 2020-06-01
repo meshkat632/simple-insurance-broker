@@ -2,13 +2,14 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const jwt = require('jsonwebtoken')
+const {v4: uuidv4} = require('uuid');
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({extended: false}))
 
 let contracts = [
     {
-        id: 0,
+        id: uuidv4(),
         customer_name: "Bob",
         customer_id: 50001,
         rate: 200,
@@ -27,7 +28,7 @@ let contracts = [
 
     },
     {
-        id: 1,
+        id: uuidv4(),
         customer_name: "Alice",
         customer_id: 50002,
         rate: 200,
@@ -54,28 +55,21 @@ app.get('/api/contracts', authenticateToken, (req, res) => {
 
 app.post('/api/contracts', authenticateToken, (req, res) => {
     console.log("post new contract");
-    console.log("new contract body"+ JSON.stringify(req.body));
+    console.log("new contract body" + JSON.stringify(req.body));
     const newContract = req.body
-    newContract.id = contracts.length;
+    newContract.id = uuidv4();
     contracts.push(newContract)
     res.send(contracts);
 });
 
 app.delete('/api/contracts', authenticateToken, (req, res) => {
-    try{
-        var id = parseInt(req.query.id)
-        let contractToDelete = contracts.find(contract => contract.id === id)
-        if(contractToDelete !== null){
-            contracts = contracts.filter(contract => contract.id !== id)
-            res.send(contracts);
-        }else {
-            res.status(404);
-            res.send('object not found');
-        }
-    } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send('invalid query parameter');
+    let contractToDelete = contracts.find(contract => contract.id === req.query.id)
+    if (contractToDelete !== null) {
+        contracts = contracts.filter(contract => contract.id !== req.query.id)
+        res.send(contracts);
+    } else {
+        res.status(404);
+        res.send('object not found');
     }
 });
 
