@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sib-customer-service-service
+  labels:
+    run: sib-customer-service
+spec:
+  ports:
+    - port: 3003
+      protocol: TCP
+  selector:
+    app: sib-customer-service
+  type: NodePort

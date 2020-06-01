@@ -1,6 +1,6 @@
 # running locally 
 npm install
-npm start  // to start the local server  open browser http://localhost:3001/ to see the app
+npm start  // to start the local server  open browser http://localhost:3004/ to see the app
 or for developement 
 npm rub devStart
 
