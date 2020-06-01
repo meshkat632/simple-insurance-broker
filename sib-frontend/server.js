@@ -2,6 +2,18 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
+console.log("SESSION_SECRET:"+process.env.SESSION_SECRET);
+console.log("ACCESS_TOKEN_SECRET:"+process.env.ACCESS_TOKEN_SECRET);
+console.log("REFRESH_TOKEN_SECRET:"+process.env.REFRESH_TOKEN_SECRET);
+console.log("API_CONTRACTS_HOST:"+process.env.API_CONTRACTS_HOST);
+console.log("API_CONTRACTS_PORT:"+process.env.API_CONTRACTS_PORT);
+console.log("API_CUSTOMER_HOST:"+process.env.API_CUSTOMER_HOST);
+console.log("API_CUSTOMER_PORT:"+process.env.API_CUSTOMER_PORT);
+console.log("API_PRODUCT_HOST:"+process.env.API_PRODUCT_HOST);
+console.log("API_PRODUCT_PORT:"+process.env.API_PRODUCT_PORT);
+
+
+
 const express = require('express')
 const app = express()
 const passport = require('passport')
