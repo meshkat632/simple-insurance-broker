@@ -7,6 +7,8 @@ app.controller('jsaLoadCustomers', function($scope, $http, $location) {
     $scope.customers = [];
     $scope.apiAccessToekn = undefined;
 
+
+
     var retriveAccessToken = function(onSuccess, onError){
         var accessTokenEndpoint = "token";
         $http.get(accessTokenEndpoint ).then( response => {
@@ -14,10 +16,23 @@ app.controller('jsaLoadCustomers', function($scope, $http, $location) {
             console.log(JSON.stringify(response.data));
             console.log("############################");
             $scope.apiAccessToekn = response.data.accessToken;
+            $scope.getAllProducts();
             $scope.getAllContracts();
             $scope.getAllCustomers();
         }, response => {
             console.error("\"Error Status: \" +  response.statusText;");
+        });
+    }
+
+    $scope.getAllProducts =function () {
+        var url = "api/products";
+        $http.get(url, {
+            headers: {'Authorization': 'Bearer '+$scope.apiAccessToekn+''}
+        }).then( response => {
+            $scope.productsDetails = response.data;
+            console.log(JSON.stringify(response.data));
+        }, response => {
+            $scope.postResultMessage = "Error Status: " +  response.statusText;
         });
     }
 
@@ -62,8 +77,21 @@ app.controller('jsaLoadCustomers', function($scope, $http, $location) {
         });
     }
 
+    $scope.creatContract = function(newContract){
+        console.log("create new Contract "+JSON.stringify(newContract))
+        $scope.selectedProduct = newContract;
+        newContract.customer = $scope.customers.find(customer => customer.id === newContract.customerId);
 
-
+        var url = "api/contracts";
+        $http.post(url, newContract, {
+            headers: {'Authorization': 'Bearer '+$scope.apiAccessToekn+''}
+        }).then( response => {
+            console.log(JSON.stringify(response.data));
+            $scope.contracts = response.data;
+        }, response => {
+            $scope.postResultMessage = "Error Status: " +  response.statusText;
+        });
+    }
 
     $scope.getAllContracts =function () {
         var url = "api/contracts";
@@ -87,42 +115,6 @@ app.controller('jsaLoadCustomers', function($scope, $http, $location) {
             console.log(JSON.stringify(response.data));
             $scope.contracts = response.data;
             //$scope.getAllCustomers();
-        }, response => {
-            $scope.postResultMessage = "Error Status: " +  response.statusText;
-        });
-    }
-
-
-
-
-    $scope.creatContract = function(){
-
-        console.log("creatContract");
-
-        var newContract = {
-            customer_name: "Alice",
-            customer_id: 50002,
-            rate: 200,
-            subContracts: [
-                {
-                    contactId: 10002,
-                    provider: 'Allianz',
-                    rate: 100
-                },
-                {
-                    contactId: 20001,
-                    provider: 'HDI',
-                    rate: 100
-                }
-            ]
-        };
-
-        var url = "api/contracts";
-        $http.post(url, newContract, {
-            headers: {'Authorization': 'Bearer '+$scope.apiAccessToekn+''}
-        }).then( response => {
-            console.log(JSON.stringify(response.data));
-            $scope.getAllCustomers();
         }, response => {
             $scope.postResultMessage = "Error Status: " +  response.statusText;
         });

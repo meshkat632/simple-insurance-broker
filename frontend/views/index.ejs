@@ -36,7 +36,17 @@
         </table>
     </div>
     <div class="row col-md-7 table-responsive">
-        <button ng-click="creatContract()">Creat</button>
+
+        <h3>New Contract Form :</h3>
+        <div class="row col-md-7 table-responsive">
+            <form name="form" class="css-form" novalidate>
+                CustomerId:
+                <input type="text" ng-model="contract.customerId" name="customerId" required /><br />
+                Product:
+                <select ng-model="contract.product" ng-options="item.product_name for item in productsDetails"></select>
+            </form>
+        </div>
+        <button ng-click="creatContract(contract)">Creat New Contract</button>
     </div>
 
 
