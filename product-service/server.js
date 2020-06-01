@@ -2,14 +2,68 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const jwt = require('jsonwebtoken')
+const {v4: uuidv4} = require('uuid');
 
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
-var products = [ "Product-1", "Product-2", "Product-3", "Product-4"]
-
+let products = [{
+    id: uuidv4(),
+    product_name: "Product-1",
+    subContracts: {
+        "allianz": {
+            id: uuidv4(),
+            product_name: "Allianz-Product-1",
+        },
+        "hdi": {
+            id: uuidv4(),
+            product_name: "HDI-Product-1",
+        },
+        "huk": {
+            id: uuidv4(),
+            product_name: "HUK-Product-1",
+        }
+    }
+},
+    {
+        id: uuidv4(),
+        product_name: "Product-2",
+        subContracts: {
+            "allianz": {
+                id: uuidv4(),
+                product_name: "Allianz-Product-2",
+            },
+            "hdi": {
+                id: uuidv4(),
+                product_name: "HDI-Product-2",
+            },
+            "huk": {
+                id: uuidv4(),
+                product_name: "HUK-Product-2",
+            }
+        }
+    },
+    {
+        id: uuidv4(),
+        product_name: "Product-3",
+        subContracts: {
+            "allianz": {
+                id: uuidv4(),
+                product_name: "Allianz-Product-3",
+            },
+            "hdi": {
+                id: uuidv4(),
+                product_name: "HDI-Product-3",
+            },
+            "huk": {
+                id: uuidv4(),
+                product_name: "HUK-Product-3",
+            }
+        }
+    }
+]
 
 app.get('/api/products', authenticateToken, (req, res) => {
-    console.log("--->Get All products: \n" + JSON.stringify(products, null, 4));
     res.send(products);
 });
 
@@ -31,4 +85,12 @@ function authenticateToken(req, res, next) {
     })
 }
 
-app.listen(3002)
+bookContract = function (product) {
+    return {
+        id: uuidv4(),
+        "product": product,
+        rate: 100 * (Math.floor(Math.random() * 6) + 1)
+    }
+}
+
+app.listen(3004)

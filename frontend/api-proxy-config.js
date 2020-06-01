@@ -10,8 +10,8 @@ function configureApiProxy(app) {
         }
     }
     app.use('/api/contracts', createProxyMiddleware({ target: 'http://localhost:3002', changeOrigin: true ,onProxyReq: restream}));
-    app.use('/api/products', createProxyMiddleware({ target: 'http://localhost:3002', changeOrigin: true ,onProxyReq: restream}));
     app.use('/api/customers', createProxyMiddleware({ target: 'http://localhost:3003', changeOrigin: true ,onProxyReq: restream}));
+    app.use('/api/products', createProxyMiddleware({ target: 'http://localhost:3004', changeOrigin: true ,onProxyReq: restream}));
 
 }
 module.exports = configureApiProxy
