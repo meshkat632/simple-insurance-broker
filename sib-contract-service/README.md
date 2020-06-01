@@ -1,21 +1,21 @@
 # running locally 
 npm install
-npm start  // to start the local server  open browser http://localhost:3001/ to see the app
+npm start  // to start the local server  open browser http://localhost:3002/ to see the app
 or for developement 
 npm rub devStart
 
 # build docker image and push it into docker hub
-docker build -t meshkat/sib-frontend . 
-docker tag 98d87d8167cc meshkat/sib-frontend:latest // use the image id from the previous build command
-docker push meshkat/sib-frontend:latest
+docker build -t meshkat/sib-contract-service . 
+docker tag 98d87d8167cc meshkat/sib-contract-service:latest // use the image id from the previous build command
+docker push meshkat/sib-contract-service:latest
 
 
 #deploy in minikube
 cd ..
 cd deployments/
 
-kubectl apply -f sib-frontend-deployment.yaml
-kubectl apply -f sib-frontend-service.yaml 
+kubectl apply -f sib-contract-service-deployment.yaml
+kubectl apply -f sib-contract-service-service.yaml 
 kubectl cluster-info  // collect the minikub ip address
 kubectl get svc
 NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
