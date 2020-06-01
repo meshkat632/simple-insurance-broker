@@ -23,14 +23,8 @@ spec:
       containers:
         - name: sib-contract-service
           env:
-            - name: KUBERNETES_LABELS
-              value: project=infinispan-data-grid
-            - name: SESSION_SECRET
-              value: "0990647129439769162879600442732473162458222840664543019661434803330485171904072696513932991921740970"
             - name: ACCESS_TOKEN_SECRET
               value: "8242545801755761506376408302163326328803538689829747727040587833343463956932020309503098520983720859"
-            - name: REFRESH_TOKEN_SECRET
-              value: "0876344270227451475316210884525499875016787944395504822997819982483788701082328857499591321901987514"
           image: meshkat/sib-contract-service:latest
           imagePullPolicy: Always
           ports:

@@ -9,5 +9,5 @@ spec:
     - port: 3002
       protocol: TCP
   selector:
-    app: sib-customer-service
+    app: sib-contract-service
   type: NodePort

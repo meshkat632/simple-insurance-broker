@@ -1,4 +1,10 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+console.log("NODE_ENV:"+process.env.NODE_ENV);
+console.log("ACCESS_TOKEN_SECRET:"+process.env.ACCESS_TOKEN_SECRET);
+
+
 const express = require('express')
 const app = express()
 const jwt = require('jsonwebtoken')
@@ -65,6 +71,10 @@ let products = [{
 
 app.get('/api/products', authenticateToken, (req, res) => {
     res.send(products);
+});
+
+app.get('/healthCheck', (req, res) => {
+    res.send({ name: 'sib-product-service', status : 'up'});
 });
 
 function authenticateToken(req, res, next) {

@@ -1,4 +1,9 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+console.log("NODE_ENV:"+process.env.NODE_ENV);
+console.log("ACCESS_TOKEN_SECRET:"+process.env.ACCESS_TOKEN_SECRET);
+
 const express = require('express')
 const app = express()
 const jwt = require('jsonwebtoken')
@@ -52,6 +57,10 @@ app.delete('/api/contracts', authenticateToken, (req, res) => {
         res.status(404);
         res.send('object not found');
     }
+});
+
+app.get('/healthCheck', (req, res) => {
+    res.send({ name: 'sib-contract-service', status : 'up'});
 });
 
 function authenticateToken(req, res, next) {

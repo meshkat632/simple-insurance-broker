@@ -31,6 +31,20 @@ spec:
               value: "8242545801755761506376408302163326328803538689829747727040587833343463956932020309503098520983720859"
             - name: REFRESH_TOKEN_SECRET
               value: "0876344270227451475316210884525499875016787944395504822997819982483788701082328857499591321901987514"
+            - name: NODE_ENV
+              value: production
+            - name: API_CONTRACTS_HOST
+              value: "172.17.0.3"
+            - name: API_CONTRACTS_PORT
+              value: "30498"
+            - name: API_CUSTOMER_HOST
+              value: "172.17.0.3"
+            - name: API_CUSTOMER_PORT
+              value: "32240"
+            - name: API_PRODUCT_HOST
+              value: "172.17.0.3"
+            - name: API_PRODUCT_PORT
+              value: "30670"
           image: meshkat/sib-frontend:latest
           imagePullPolicy: Always
           ports:

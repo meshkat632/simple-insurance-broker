@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
+console.log("NODE_ENV:"+process.env.NODE_ENV);
 console.log("SESSION_SECRET:"+process.env.SESSION_SECRET);
 console.log("ACCESS_TOKEN_SECRET:"+process.env.ACCESS_TOKEN_SECRET);
 console.log("REFRESH_TOKEN_SECRET:"+process.env.REFRESH_TOKEN_SECRET);
