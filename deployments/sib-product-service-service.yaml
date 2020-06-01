@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sib-product-service-service
+  labels:
+    run: sib-product-service
+spec:
+  ports:
+    - port: 3004
+      protocol: TCP
+  selector:
+    app: sib-product-service
+  type: NodePort

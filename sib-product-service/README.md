@@ -5,17 +5,17 @@ or for developement
 npm rub devStart
 
 # build docker image and push it into docker hub
-docker build -t meshkat/sib-frontend . 
-docker tag 98d87d8167cc meshkat/sib-frontend:latest // use the image id from the previous build command
-docker push meshkat/sib-frontend:latest
+docker build -t meshkat/sib-product-service . 
+docker tag 98d87d8167cc meshkat/sib-product-service:latest // use the image id from the previous build command
+docker push meshkat/sib-product-service:latest
 
 
 #deploy in minikube
 cd ..
 cd deployments/
 
-kubectl apply -f sib-frontend-deployment.yaml
-kubectl apply -f sib-frontend-service.yaml 
+kubectl apply -f sib-product-service-deployment.yaml
+kubectl apply -f sib-product-service-service.yaml 
 kubectl cluster-info  // collect the minikub ip address
 kubectl get svc
 NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
