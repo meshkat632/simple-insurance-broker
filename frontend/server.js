@@ -9,10 +9,12 @@ const flash = require('express-flash')
 const session = require('express-session')
 const bcrypt = require('bcrypt')
 const methodOverride = require('method-override')
+const jwt = require('jsonwebtoken')
 
 global.__basedir = __dirname;
 var path = __basedir + '/views/';
 
+const configureApiProxy = require('./api-proxy-config')
 const initializePassport = require('./passport-config')
 initializePassport(
     passport,
@@ -20,9 +22,15 @@ initializePassport(
     id => users.find(user => user.id === id)
 )
 
-const users = []
+const users = [ { id: '1590969423924',
+    name: 'w',
+    email: 'w@w',
+    password: '$2b$10$CLodCNYDN3XAsYMph9Hl..uDcONVr//lmCF9p4XqEkeY7TYMaDOsm' }
+]
+let refreshTokens = []
 app.set('view-engine', 'ejs')
 app.use(express.static('resources'));
+app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
@@ -35,15 +43,13 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 app.get('/', checkAuthenticated, (req, res) => {
-    res.render('contracts.ejs', {name: req.user.name})
+    res.render('index.ejs', {name: req.user.name})
 
 })
 app.delete('/logout', (req, res) => {
     req.logout()
     res.redirect('/login')
 })
-
-
 app.get('/login', (req, res) => {
     res.render('login.ejs')
 })
@@ -52,8 +58,6 @@ app.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
 }))
-
-
 app.get('/register', (req, res) => {
     res.render('register.ejs')
 })
@@ -73,10 +77,22 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     }
     console.log(users)
 })
-app.get('/api/customers/all', checkAuthenticated, (req, res) =>{
-    console.log("--->Get All Customers: \n" + JSON.stringify(customers, null, 4));
-    res.send(customers);
-});
+
+app.delete('/token', checkAuthenticated, (req, res) => {
+    refreshTokens = refreshTokens.filter(token => token !== req.body.token)
+    res.sendStatus(204)
+})
+
+app.get('/token', checkAuthenticated, (req, res) => {
+    const user = { name: req.user.username }
+    const accessToken = generateAccessToken(user)
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+    refreshTokens.push(refreshToken)
+    res.json({ accessToken: accessToken, refreshToken: refreshToken })
+})
+
+configureApiProxy(app)
+
 app.use("*", (req,res) => {
     res.sendFile(path + "404.html");
 });
@@ -95,54 +111,7 @@ function checkNotAuthenticated(req, res, next) {
     next()
 }
 
-// Fetch all Customers
-var customers = [
-    {
-        id: 1,
-        name: "Jack",
-        age: 25,
-        address:{
-            street: "NANTERRE CT",
-            postcode: "77471"
-        }
-    },
-    {
-        id: 2,
-        name: "Mary",
-        age: 37,
-        address:{
-            street: "W NORMA ST",
-            postcode: "77009"
-        }
-    },
-    {
-        id: 3,
-        name: "Peter",
-        age: 17,
-        address:{
-            street: "S NUGENT AVE",
-            postcode: "77571"
-        }
-    },
-    {
-        id: 4,
-        name: "Amos",
-        age: 23,
-        address:{
-            street: "E NAVAHO TRL",
-            postcode: "77449"
-        }
-    },
-    {
-        id: 5,
-        name: "Craig",
-        age: 45,
-        address: {
-            street: "AVE N",
-            postcode: "77587"
-        }
-    }
-]
-
-
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2000m' })
+}
 app.listen(3001)
