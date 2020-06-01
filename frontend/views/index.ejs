@@ -24,14 +24,19 @@
                 <th>contract Id</th>
                 <th>Customer Name</th>
                 <th>Rate</th>
+                <th>Action</th>
             </tr>
             <tr ng-repeat="contract in contracts | orderBy : 'name'" ng-class-even="'info'" ng-class-odd="'success'">
                 <td>{{$index + 1 }}</td>
                 <td>{{contract.id}}</td>
                 <td>{{contract.customer_name}}</td>
                 <td>{{contract.rate}}</td>
+                <td><button ng-click="deleteContract(contract)">Delete</button></td>
             </tr>
         </table>
+
+    <div class="row col-md-7 table-responsive">
+        <button ng-click="creatContract()">Creat</button>
     </div>
 </div>
 </body>

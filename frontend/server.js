@@ -91,6 +91,14 @@ app.get('/token', checkAuthenticated, (req, res) => {
     res.json({ accessToken: accessToken, refreshToken: refreshToken })
 })
 
+app.post('/test/contracts', checkAuthenticated, (req, res) => {
+    console.log("post new contract");
+    console.log("new contract body"+ JSON.stringify(req.body));
+    const newContract = req.body
+    res.send(newContract);
+});
+
+
 configureApiProxy(app)
 
 app.use("*", (req,res) => {
