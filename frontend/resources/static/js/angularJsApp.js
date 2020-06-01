@@ -14,6 +14,7 @@ app.controller('jsaLoadCustomers', function($scope, $http, $location) {
             console.log(JSON.stringify(response.data));
             console.log("############################");
             $scope.apiAccessToekn = response.data.accessToken;
+            $scope.getAllContracts();
             $scope.getAllCustomers();
         }, response => {
             console.error("\"Error Status: \" +  response.statusText;");
@@ -21,6 +22,50 @@ app.controller('jsaLoadCustomers', function($scope, $http, $location) {
     }
 
     $scope.getAllCustomers =function () {
+        var url = "api/customers";
+        $http.get(url, {
+            headers: {'Authorization': 'Bearer '+$scope.apiAccessToekn+''}
+        }).then( response => {
+            $scope.getDivAvailable = true;
+            $scope.customers = response.data;
+            console.log(JSON.stringify(response.data));
+        }, response => {
+            $scope.postResultMessage = "Error Status: " +  response.statusText;
+        });
+    }
+
+    $scope.deleteCustomer = function(customer){
+        var url = "api/customers/?id="+customer.id;
+        $http.delete(url, {
+            headers: {'Authorization': 'Bearer '+$scope.apiAccessToekn+''}
+        }).then( response => {
+            console.log(JSON.stringify(response.data));
+            $scope.customers = response.data;
+        }, response => {
+            $scope.postResultMessage = "Error Status: " +  response.statusText;
+        });
+    }
+
+    $scope.creatNewCustomer = function(newCustomer){
+        $scope.creatNewCustomerMessage = "Creating new customer";
+        console.log("create new Customer "+JSON.stringify(newCustomer))
+        var url = "api/customers";
+        $http.post(url, newCustomer, {
+            headers: {'Authorization': 'Bearer '+$scope.apiAccessToekn+''}
+        }).then( response => {
+            console.log(JSON.stringify(response.data));
+            $scope.getAllCustomers();
+            $scope.creatNewCustomerMessage = "new customer added";
+        }, response => {
+            $scope.postResultMessage = "Error Status: " +  response.statusText;
+            $scope.creatNewCustomerMessage = response.data;
+        });
+    }
+
+
+
+
+    $scope.getAllContracts =function () {
         var url = "api/contracts";
         $http.get(url, {
             headers: {'Authorization': 'Bearer '+$scope.apiAccessToekn+''}
@@ -46,6 +91,9 @@ app.controller('jsaLoadCustomers', function($scope, $http, $location) {
             $scope.postResultMessage = "Error Status: " +  response.statusText;
         });
     }
+
+
+
 
     $scope.creatContract = function(){
 

@@ -17,7 +17,7 @@
     </form>
 
     <h3>Contracts List:</h3>
-    <div id="customerlist" class="row col-md-7 table-responsive">
+    <div id="contractlist" class="row col-md-7 table-responsive">
         <table class="table table-bordered table-hover">
             <tr>
                 <th>No</th>
@@ -34,10 +34,47 @@
                 <td><button ng-click="deleteContract(contract)">Delete</button></td>
             </tr>
         </table>
-
+    </div>
     <div class="row col-md-7 table-responsive">
         <button ng-click="creatContract()">Creat</button>
     </div>
+
+
+    <h3>Customer List:</h3>
+    <div id="customerlist" class="row col-md-7 table-responsive">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>No</th>
+                <th>contract Id</th>
+                <th>Customer Name</th>
+                <th>Customer email</th>
+                <th>Action</th>
+            </tr>
+            <tr ng-repeat="customer in customers | orderBy : 'name'" ng-class-even="'info'" ng-class-odd="'success'">
+                <td>{{$index + 1 }}</td>
+                <td>{{customer.id}}</td>
+                <td>{{customer.firstName+" "+customer.lastName}} </td>
+                <td>{{customer.email}}</td>
+                <td><button ng-click="deleteCustomer(customer)">Delete</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="row col-md-7 table-responsive">
+    <h3>New Customer Form :</h3>
+    <div class="row col-md-7 table-responsive">
+        <form name="form" class="css-form" novalidate>
+            First Name:
+            <input type="text" ng-model="user.firstName" name="uName" required /><br />
+            Last Name:
+            <input type="text" ng-model="user.lastName" name="uName" required /><br />
+            E-mail:
+            <input type="email" ng-model="user.email" name="uEmail" required/><br />
+            <button ng-click="creatNewCustomer(user)">Add Customer</button> {{creatNewCustomerMessage}}
+        </form>
+    </div>
+    <div class="row col-md-7 table-responsive">
+
+
 </div>
 </body>
 </html>
